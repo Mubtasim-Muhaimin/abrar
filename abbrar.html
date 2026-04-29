@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our School Days — Abrar & Jhoti</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg-deep:       #080c14;
+    --bg-mid:        #0d1220;
+    --bg-card:       #111828;
+    --accent-rose:   #e8627a;
+    --accent-gold:   #f0b86e;
+    --accent-lilac:  #b19cd9;
+    --text-primary:  #f0eae0;
+    --text-muted:    #8a8fa8;
+    --border:        rgba(255,255,255,0.07);
+    --glow-rose:     rgba(232,98,122,0.25);
+    --glow-gold:     rgba(240,184,110,0.2);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* ── Custom Cursor ── */
+  .cursor {
+    width: 10px; height: 10px;
+    background: var(--accent-rose);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%,-50%);
+    transition: transform .12s ease, width .2s, height .2s, background .2s;
+  }
+  .cursor-ring {
+    width: 34px; height: 34px;
+    border: 1.5px solid var(--accent-rose);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 9998;
+    transform: translate(-50%,-50%);
+    transition: transform .35s ease;
+    opacity: .6;
+  }
+  body:hover .cursor { opacity: 1; }
+
+  /* ── Nav ── */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 100;
+    padding: 1.2rem 4rem;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(8,12,20,0.82);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+    transition: padding .3s;
+  }
+  .nav-logo {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.7rem;
+    color: var(--accent-rose);
+    text-decoration: none;
+    letter-spacing: .03em;
+  }
+  .nav-logo span { color: var(--accent-gold); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: .88rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    font-weight: 500;
+    transition: color .25s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute; bottom: -4px; left: 0;
+    width: 0; height: 1.5px;
+    background: var(--accent-rose);
+    transition: width .3s;
+  }
+  .nav-links a:hover { color: var(--text-primary); }
+  .nav-links a:hover::after { width: 100%; }
+
+  /* Hamburger */
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+  .hamburger span { display: block; width: 24px; height: 2px; background: var(--text-primary); transition: .3s; border-radius: 2px; }
+
+  /* ── Hero ── */
+  #hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+    padding: 6rem 2rem 2rem;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 60% at 20% 50%, rgba(232,98,122,.12) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 50% at 80% 40%, rgba(177,156,217,.10) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 50% 80%, rgba(240,184,110,.08) 0%, transparent 70%);
+  }
+  /* Floating petals */
+  .petal { position: absolute; pointer-events: none; opacity: 0; animation: floatPetal linear infinite; }
+  @keyframes floatPetal {
+    0%   { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+    5%   { opacity: .7; }
+    95%  { opacity: .5; }
+    100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
+  }
+
+  .hero-tag {
+    font-size: .78rem; letter-spacing: .25em; text-transform: uppercase;
+    color: var(--accent-gold); margin-bottom: 1.2rem;
+    animation: fadeUp .8s .2s both;
+  }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.6rem, 6vw, 5.2rem);
+    font-weight: 900; text-align: center; line-height: 1.1;
+    animation: fadeUp .8s .35s both;
+  }
+  .hero-title em { font-style: italic; color: var(--accent-rose); }
+  .hero-title .and {
+    font-family: 'Dancing Script', cursive;
+    color: var(--accent-gold); font-size: .75em;
+    display: block; line-height: 1.3;
+  }
+  .hero-sub {
+    margin-top: 1.4rem;
+    color: var(--text-muted); font-size: 1.05rem; text-align: center;
+    max-width: 480px; line-height: 1.7;
+    animation: fadeUp .8s .5s both;
+  }
+  .hero-cta {
+    margin-top: 2.5rem;
+    display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+    animation: fadeUp .8s .65s both;
+  }
+  .btn {
+    padding: .8rem 2rem; border-radius: 50px; font-size: .9rem;
+    font-weight: 500; letter-spacing: .06em;
+    cursor: pointer; text-decoration: none; transition: .3s;
+    display: inline-flex; align-items: center; gap: .5rem;
+  }
+  .btn-primary {
+    background: var(--accent-rose); color: #fff;
+    box-shadow: 0 0 30px var(--glow-rose);
+  }
+  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 6px 40px var(--glow-rose); }
+  .btn-ghost {
+    border: 1px solid var(--border); color: var(--text-primary);
+  }
+  .btn-ghost:hover { border-color: var(--accent-lilac); color: var(--accent-lilac); transform: translateY(-3px); }
+
+  .hero-scroll {
+    position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: .5rem;
+    color: var(--text-muted); font-size: .75rem; letter-spacing: .15em; text-transform: uppercase;
+    animation: fadeUp .8s .9s both;
+  }
+  .scroll-line {
+    width: 1px; height: 50px;
+    background: linear-gradient(to bottom, var(--accent-rose), transparent);
+    animation: scrollPulse 2s infinite;
+  }
+  @keyframes scrollPulse { 0%,100%{opacity:.3} 50%{opacity:1} }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+
+  /* ── Section Base ── */
+  section { padding: 6rem 2rem; }
+  .section-label {
+    font-size: .75rem; letter-spacing: .3em; text-transform: uppercase;
+    color: var(--accent-gold); margin-bottom: .8rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 700; line-height: 1.15;
+    margin-bottom: 1rem;
+  }
+  .section-title em { font-style: italic; color: var(--accent-rose); }
+  .section-desc { color: var(--text-muted); max-width: 540px; line-height: 1.8; }
+  .container { max-width: 1200px; margin: 0 auto; }
+  .center { text-align: center; }
+  .center .section-desc { margin: 0 auto; }
+
+  /* ── Characters ── */
+  #characters { background: var(--bg-mid); }
+  .characters-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;
+    margin-top: 4rem; align-items: start;
+  }
+  .char-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 24px; overflow: hidden;
+    transition: transform .4s, box-shadow .4s;
+    position: relative;
+  }
+  .char-card:hover { transform: translateY(-8px); }
+  .char-card.boy:hover { box-shadow: 0 20px 60px rgba(240,184,110,.15); }
+  .char-card.girl:hover { box-shadow: 0 20px 60px var(--glow-rose); }
+
+  .char-avatar {
+    width: 100%; aspect-ratio: 4/3;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 6rem; position: relative; overflow: hidden;
+  }
+  .char-avatar.boy-bg {
+    background: linear-gradient(135deg, #0f1e36 0%, #1a2d4a 50%, #0e1828 100%);
+  }
+  .char-avatar.girl-bg {
+    background: linear-gradient(135deg, #200e1a 0%, #3a1528 50%, #1e0c16 100%);
+  }
+  .char-avatar-emoji { font-size: 7rem; filter: drop-shadow(0 4px 20px rgba(0,0,0,.5)); z-index: 1; }
+  .char-avatar::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 80%, rgba(255,255,255,.04) 0%, transparent 70%);
+  }
+  .char-avatar .floating-icons {
+    position: absolute; inset: 0; pointer-events: none;
+  }
+  .fi {
+    position: absolute; font-size: 1.5rem; opacity: .4;
+    animation: floatFi 4s ease-in-out infinite;
+  }
+  @keyframes floatFi {
+    0%,100%{transform:translateY(0) rotate(0deg)} 50%{transform:translateY(-12px) rotate(10deg)}
+  }
+  .char-body { padding: 2rem 2rem 2.5rem; }
+  .char-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.9rem; font-weight: 700; margin-bottom: .3rem;
+  }
+  .char-name.boy { color: var(--accent-gold); }
+  .char-name.girl { color: var(--accent-rose); }
+  .char-badge {
+    display: inline-flex; align-items: center; gap: .4rem;
+    font-size: .72rem; letter-spacing: .1em; text-transform: uppercase;
+    padding: .3rem .9rem; border-radius: 50px; font-weight: 500;
+    margin-bottom: 1.2rem;
+  }
+  .char-badge.boy { background: rgba(240,184,110,.12); color: var(--accent-gold); border: 1px solid rgba(240,184,110,.3); }
+  .char-badge.girl { background: rgba(232,98,122,.12); color: var(--accent-rose); border: 1px solid rgba(232,98,122,.3); }
+  .char-desc { color: var(--text-muted); line-height: 1.8; font-size: .95rem; }
+  .char-traits { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.2rem; }
+  .trait {
+    font-size: .75rem; padding: .3rem .8rem; border-radius: 20px;
+    background: rgba(255,255,255,.04); border: 1px solid var(--border);
+    color: var(--text-muted);
+  }
+
+  /* connector between cards */
+  .char-connector {
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .heart-divider {
+    font-size: 2.5rem; position: absolute;
+    top: 50%; left: 50%; transform: translate(-50%,-50%);
+    animation: heartBeat 1.5s ease-in-out infinite;
+    filter: drop-shadow(0 0 12px var(--accent-rose));
+    z-index: 5;
+  }
+  @keyframes heartBeat {
+    0%,100%{transform:translate(-50%,-50%) scale(1)} 50%{transform:translate(-50%,-50%) scale(1.2)}
+  }
+
+  /* ── Story ── */
+  #story { background: var(--bg-deep); }
+  .story-timeline { margin-top: 4rem; position: relative; }
+  .story-timeline::before {
+    content: '';
+    position: absolute; left: 50%; top: 0; bottom: 0;
+    width: 1px; background: linear-gradient(to bottom, transparent, var(--accent-rose), var(--accent-gold), transparent);
+    transform: translateX(-50%);
+  }
+  .story-item {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+    margin-bottom: 5rem; position: relative; align-items: center;
+  }
+  .story-item:nth-child(even) .story-content { grid-column: 2; }
+  .story-item:nth-child(even) .story-visual { grid-column: 1; grid-row: 1; }
+  .story-dot {
+    position: absolute; left: 50%; top: 50%;
+    transform: translate(-50%,-50%);
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--accent-rose);
+    box-shadow: 0 0 20px var(--glow-rose);
+    z-index: 2;
+  }
+  .story-content { padding: 2rem; }
+  .story-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 5rem; font-weight: 900;
+    color: rgba(232,98,122,.08); line-height: 1;
+    margin-bottom: -.5rem;
+  }
+  .story-chapter {
+    font-size: .72rem; letter-spacing: .2em; text-transform: uppercase;
+    color: var(--accent-gold); margin-bottom: .6rem;
+  }
+  .story-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem; font-weight: 700; margin-bottom: 1rem;
+  }
+  .story-text { color: var(--text-muted); line-height: 1.9; font-size: .95rem; }
+  .story-visual {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px; padding: 2.5rem;
+    text-align: center; font-size: 4rem;
+    position: relative; overflow: hidden;
+    min-height: 180px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 1rem;
+  }
+  .story-visual::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 50%, rgba(232,98,122,.06) 0%, transparent 70%);
+  }
+  .story-visual-label {
+    font-size: .8rem; color: var(--text-muted); font-style: italic;
+    font-family: 'Dancing Script', cursive; font-size: 1.1rem;
+  }
+
+  /* ── Gallery ── */
+  #gallery { background: var(--bg-mid); }
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto;
+    gap: 1rem;
+    margin-top: 3rem;
+  }
+  .gallery-item {
+    border-radius: 16px; overflow: hidden;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    position: relative; cursor: pointer;
+    transition: transform .4s, box-shadow .4s;
+  }
+  .gallery-item:hover { transform: scale(1.03); z-index: 2; box-shadow: 0 12px 40px rgba(0,0,0,.5); }
+  .gallery-item.wide { grid-column: span 2; }
+  .gallery-item.tall { grid-row: span 2; }
+  .gallery-placeholder {
+    width: 100%; padding-top: 75%;
+    position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .gallery-item.wide .gallery-placeholder { padding-top: 50%; }
+  .gallery-item.tall .gallery-placeholder { padding-top: 175%; }
+  .gallery-inner {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: .8rem;
+  }
+  .gallery-emoji { font-size: 2.8rem; }
+  .gallery-caption {
+    font-size: .78rem; color: var(--text-muted);
+    font-family: 'Dancing Script', cursive; font-size: 1rem;
+    text-align: center; padding: 0 1rem;
+  }
+  .gallery-overlay {
+    position: absolute; inset: 0;
+    background: rgba(8,12,20,.92);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: .5rem;
+    opacity: 0; transition: opacity .35s;
+  }
+  .gallery-item:hover .gallery-overlay { opacity: 1; }
+  .gallery-overlay-text {
+    color: var(--text-primary); font-size: .85rem;
+    font-family: 'Dancing Script', cursive; font-size: 1.2rem;
+  }
+  .gallery-overlay-icon { font-size: 1.8rem; }
+
+  /* gradient bg for gallery items */
+  .g1 .gallery-inner { background: linear-gradient(135deg,#0e1820,#1a2d3a); }
+  .g2 .gallery-inner { background: linear-gradient(135deg,#1a0e1a,#2d1a2d); }
+  .g3 .gallery-inner { background: linear-gradient(135deg,#1a1008,#2d2010); }
+  .g4 .gallery-inner { background: linear-gradient(135deg,#081a10,#102d18); }
+  .g5 .gallery-inner { background: linear-gradient(135deg,#16081a,#281028); }
+  .g6 .gallery-inner { background: linear-gradient(135deg,#1a0a08,#2d1210); }
+  .g7 .gallery-inner { background: linear-gradient(135deg,#080e1a,#101828); }
+  .g8 .gallery-inner { background: linear-gradient(135deg,#1a1620,#28203a); }
+
+  /* ── Fun Moments ── */
+  #fun { background: var(--bg-deep); }
+  .fun-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+    margin-top: 3.5rem;
+  }
+  .fun-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 20px; padding: 2rem 1.8rem;
+    transition: transform .35s, border-color .35s;
+    position: relative; overflow: hidden;
+  }
+  .fun-card::before {
+    content: ''; position: absolute; inset: 0; opacity: 0;
+    transition: opacity .35s;
+  }
+  .fun-card:nth-child(3n+1)::before { background: radial-gradient(ellipse at 0% 0%, rgba(240,184,110,.08), transparent 70%); }
+  .fun-card:nth-child(3n+2)::before { background: radial-gradient(ellipse at 50% 0%, rgba(232,98,122,.08), transparent 70%); }
+  .fun-card:nth-child(3n)::before   { background: radial-gradient(ellipse at 100% 0%, rgba(177,156,217,.08), transparent 70%); }
+  .fun-card:hover { transform: translateY(-6px); }
+  .fun-card:hover::before { opacity: 1; }
+  .fun-card:nth-child(3n+1):hover { border-color: rgba(240,184,110,.3); }
+  .fun-card:nth-child(3n+2):hover { border-color: rgba(232,98,122,.3); }
+  .fun-card:nth-child(3n):hover    { border-color: rgba(177,156,217,.3); }
+  .fun-icon { font-size: 2.5rem; margin-bottom: 1rem; display: block; }
+  .fun-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem; font-weight: 700; margin-bottom: .7rem;
+  }
+  .fun-text { color: var(--text-muted); line-height: 1.8; font-size: .9rem; }
+  .fun-quote {
+    margin-top: 1rem; padding: .8rem 1rem;
+    border-left: 2px solid var(--accent-rose);
+    background: rgba(232,98,122,.06); border-radius: 0 8px 8px 0;
+    font-size: .85rem; color: var(--text-primary);
+    font-style: italic;
+  }
+
+  /* ── Quote Banner ── */
+  #quote-banner {
+    padding: 5rem 2rem;
+    background: linear-gradient(135deg, #0d0810 0%, #110d1a 50%, #0a1018 100%);
+    text-align: center; position: relative; overflow: hidden;
+  }
+  #quote-banner::before {
+    content: '❝';
+    position: absolute; top: -1rem; left: 50%; transform: translateX(-50%);
+    font-size: 12rem; color: rgba(232,98,122,.04);
+    font-family: 'Playfair Display', serif; line-height: 1;
+    pointer-events: none;
+  }
+  .banner-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.4rem, 3vw, 2.2rem);
+    font-style: italic; line-height: 1.5; max-width: 700px; margin: 0 auto;
+  }
+  .banner-quote em { color: var(--accent-rose); font-style: normal; }
+  .banner-attr {
+    margin-top: 1.5rem; color: var(--text-muted); font-size: .85rem;
+    letter-spacing: .15em; text-transform: uppercase;
+  }
+
+  /* ── Footer ── */
+  footer {
+    background: var(--bg-mid); border-top: 1px solid var(--border);
+    padding: 3rem 2rem; text-align: center;
+  }
+  .footer-logo {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.2rem; color: var(--accent-rose);
+    margin-bottom: .8rem;
+  }
+  .footer-logo span { color: var(--accent-gold); }
+  .footer-tagline { color: var(--text-muted); font-size: .88rem; margin-bottom: 1.5rem; }
+  .footer-hearts { font-size: 1.4rem; color: var(--accent-rose); letter-spacing: .5rem; }
+  .footer-copy { margin-top: 2rem; color: var(--text-muted); font-size: .78rem; }
+
+  /* ── Reveal Animation ── */
+  .reveal {
+    opacity: 0; transform: translateY(40px);
+    transition: opacity .7s, transform .7s;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-left {
+    opacity: 0; transform: translateX(-40px);
+    transition: opacity .7s, transform .7s;
+  }
+  .reveal-left.visible { opacity: 1; transform: translateX(0); }
+  .reveal-right {
+    opacity: 0; transform: translateX(40px);
+    transition: opacity .7s, transform .7s;
+  }
+  .reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+  /* ── Responsive ── */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: var(--bg-mid); padding: 1.5rem; gap: 1.2rem; border-bottom: 1px solid var(--border); }
+    .nav-links.open { display: flex; }
+    .hamburger { display: flex; }
+    .characters-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .story-timeline::before { left: 2rem; }
+    .story-item { grid-template-columns: 1fr; padding-left: 4rem; gap: 1.5rem; }
+    .story-item:nth-child(even) .story-content { grid-column: 1; }
+    .story-item:nth-child(even) .story-visual { grid-column: 1; grid-row: auto; }
+    .story-dot { left: 2rem; }
+    .fun-grid { grid-template-columns: 1fr; }
+    .gallery-grid { grid-template-columns: repeat(2,1fr); }
+    .gallery-item.wide { grid-column: span 2; }
+    .gallery-item.tall { grid-row: span 1; }
+  }
+  @media (max-width: 500px) {
+    .gallery-grid { grid-template-columns: 1fr; }
+    .gallery-item.wide, .gallery-item.tall { grid-column: span 1; grid-row: span 1; }
+    .hero-title { font-size: 2rem; }
+    .section-title { font-size: 1.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">Abrar <span>&</span> Jhoti</a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#characters">Characters</a></li>
+    <li><a href="#story">Story</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#fun">Fun Moments</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+
+  <!-- Floating petals -->
+  <div id="petals"></div>
+
+  <p class="hero-tag">✦ Ispahani Public School & College ✦</p>
+  <h1 class="hero-title">
+    <em>Abrar Alif</em>
+    <span class="and">&amp;</span>
+    <em>Jhoti</em>
+  </h1>
+  <p class="hero-sub">Two Science students. Two sections. One school. A story that bloomed between corridors, classrooms, and stolen glances.</p>
+  <div class="hero-cta">
+    <a href="#story" class="btn btn-primary">📖 Read Their Story</a>
+    <a href="#characters" class="btn btn-ghost">✨ Meet Them</a>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>scroll</span>
+  </div>
+</section>
+
+<!-- CHARACTERS -->
+<section id="characters">
+  <div class="container">
+    <div class="center reveal">
+      <p class="section-label">The Main Characters</p>
+      <h2 class="section-title">Meet the <em>Stars</em> of the Story</h2>
+      <p class="section-desc">Science section students with different vibes, one shared universe — the hallways of Ispahani.</p>
+    </div>
+
+    <div class="characters-grid">
+      <!-- Boy -->
+      <div class="char-card boy reveal-left">
+        <div class="char-avatar boy-bg">
+          <div class="floating-icons">
+            <span class="fi" style="top:10%;left:12%;animation-delay:0s">🔬</span>
+            <span class="fi" style="top:15%;right:15%;animation-delay:.7s">📐</span>
+            <span class="fi" style="bottom:18%;left:20%;animation-delay:1.4s">⚡</span>
+            <span class="fi" style="bottom:12%;right:10%;animation-delay:.3s">🎯</span>
+          </div>
+          <span class="char-avatar-emoji">🧑‍🎓</span>
+        </div>
+        <div class="char-body">
+          <div class="char-name boy">Abrar Alif</div>
+          <span class="char-badge boy">⚗️ Science · Section B</span>
+          <p class="char-desc">The confident guy of Section B who walks into class like he owns the place — and somehow, no one disagrees. Equal parts sharp and playful, Abrar has a habit of cracking jokes at just the right moment and being weirdly good at everything he bothers to try. His friends say he acts cool, but they know better.</p>
+          <div class="char-traits">
+            <span class="trait">Confident</span>
+            <span class="trait">Playful</span>
+            <span class="trait">Science Nerd</span>
+            <span class="trait">Section B</span>
+            <span class="trait">Secretly Soft</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Girl -->
+      <div class="char-card girl reveal-right">
+        <div class="char-avatar girl-bg">
+          <div class="floating-icons">
+            <span class="fi" style="top:10%;left:12%;animation-delay:.5s">🌸</span>
+            <span class="fi" style="top:15%;right:15%;animation-delay:1.2s">⭐</span>
+            <span class="fi" style="bottom:18%;left:20%;animation-delay:.2s">💫</span>
+            <span class="fi" style="bottom:12%;right:10%;animation-delay:.9s">🦋</span>
+          </div>
+          <span class="char-avatar-emoji">👩‍🎓</span>
+        </div>
+        <div class="char-body">
+          <div class="char-name girl">Jhoti</div>
+          <span class="char-badge girl">🌸 Science · Section A</span>
+          <p class="char-desc">Section A's sunshine — and everyone knows it. Jhoti has that rare quality of making every room feel warmer just by being in it. Friendly to a fault, brilliant without making a big deal of it, and surrounded by a friend group that practically worships her. The kind of person who laughs easily and makes others feel seen.</p>
+          <div class="char-traits">
+            <span class="trait">Friendly</span>
+            <span class="trait">Warm-hearted</span>
+            <span class="trait">Center of Attention</span>
+            <span class="trait">Section A</span>
+            <span class="trait">Science Star</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Heart connector -->
+    <div style="text-align:center;margin-top:2rem;" class="reveal">
+      <span style="font-size:2rem;animation:heartBeat 1.5s ease-in-out infinite;display:inline-block;filter:drop-shadow(0 0 14px var(--accent-rose))">💗</span>
+      <p style="color:var(--text-muted);margin-top:.8rem;font-size:.9rem;font-style:italic;font-family:'Dancing Script',cursive;font-size:1.2rem">Two sections. One story. 🌸</p>
+    </div>
+  </div>
+</section>
+
+<!-- STORY -->
+<section id="story">
+  <div class="container">
+    <div class="center reveal">
+      <p class="section-label">Their Journey</p>
+      <h2 class="section-title">The <em>Story</em> So Far</h2>
+      <p class="section-desc">School days are short. But some moments stretch into forever.</p>
+    </div>
+
+    <div class="story-timeline">
+
+      <!-- Chapter 1 -->
+      <div class="story-item">
+        <div class="story-content reveal-left">
+          <div class="story-number">01</div>
+          <p class="story-chapter">Chapter One</p>
+          <h3 class="story-heading">The First Notice</h3>
+          <p class="story-text">Science class. Shared corridor. Abrar was doing what he always did — walking with that slightly-too-confident stride when he first noticed Jhoti laughing with her friends near the A-section door. It was just a laugh. But it was a loud, genuine, unfiltered laugh — and somehow it cut right through the noise of the hallway.</p>
+        </div>
+        <div class="story-visual reveal-right">
+          <span style="font-size:4rem">👀</span>
+          <div class="story-visual-label">"Wait... who is that?"</div>
+          <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%, rgba(232,98,122,.08) 0%,transparent 70%)"></div>
+        </div>
+        <div class="story-dot"></div>
+      </div>
+
+      <!-- Chapter 2 -->
+      <div class="story-item">
+        <div class="story-visual reveal-left">
+          <span style="font-size:4rem">📝</span>
+          <div class="story-visual-label">"Can I borrow a pen?" (He had three.)</div>
+          <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%, rgba(240,184,110,.08) 0%,transparent 70%)"></div>
+        </div>
+        <div class="story-content reveal-right">
+          <div class="story-number">02</div>
+          <p class="story-chapter">Chapter Two</p>
+          <h3 class="story-heading">The Excuse</h3>
+          <p class="story-text">Their schools shared a library period once a week. Abrar, armed with three perfectly good pens in his bag, still managed to find himself asking Jhoti to borrow one. Classic. She handed it over without a second glance — she was always like that, generous without needing a reason.</p>
+        </div>
+        <div class="story-dot"></div>
+      </div>
+
+      <!-- Chapter 3 -->
+      <div class="story-item">
+        <div class="story-content reveal-left">
+          <div class="story-number">03</div>
+          <p class="story-chapter">Chapter Three</p>
+          <h3 class="story-heading">The Friend Circle Chaos</h3>
+          <p class="story-text">Once word got around that Abrar and Jhoti had "talked," the school's internal gossip network activated at full speed. Both their friend groups became insufferable — teasing, winking across hallways, and staging increasingly dramatic "accidental" run-ins. It was embarrassing. It was also kind of sweet.</p>
+        </div>
+        <div class="story-visual reveal-right">
+          <span style="font-size:4rem">🤭</span>
+          <div class="story-visual-label">"Guys stop it — he's RIGHT THERE."</div>
+          <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%, rgba(177,156,217,.08) 0%,transparent 70%)"></div>
+        </div>
+        <div class="story-dot"></div>
+      </div>
+
+      <!-- Chapter 4 -->
+      <div class="story-item">
+        <div class="story-visual reveal-left">
+          <span style="font-size:4rem">☁️</span>
+          <div class="story-visual-label">Rooftop during break. Quiet moments.</div>
+          <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%, rgba(232,98,122,.08) 0%,transparent 70%)"></div>
+        </div>
+        <div class="story-content reveal-right">
+          <div class="story-number">04</div>
+          <p class="story-chapter">Chapter Four</p>
+          <h3 class="story-heading">The Quiet Afternoons</h3>
+          <p class="story-text">Eventually, the teasing faded into the background and what remained were the small, ordinary things — helping each other prep for Chemistry viva, trading notes after a particularly chaotic Physics lecture, and somehow always ending up near each other during school events. Not planned. Just comfortable.</p>
+        </div>
+        <div class="story-dot"></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="container">
+    <div class="center reveal">
+      <p class="section-label">School Memories</p>
+      <h2 class="section-title">Moments from the <em>Album</em></h2>
+      <p class="section-desc">Every memory has a colour. These ones are soft gold and petal pink.</p>
+    </div>
+
+    <div class="gallery-grid">
+      <div class="gallery-item wide g1 reveal">
+        <div class="gallery-placeholder">
+          <div class="gallery-inner">
+            <span class="gallery-emoji">🏫</span>
+            <span class="gallery-caption">The School Corridor — where all stories begin</span>
+          </div>
+        </div>
+        <div class="gallery-overlay">
+          <span class="gallery-overlay-icon">📸</span>
+          <span class="gallery-overlay-text">Ispahani Hallways</span>
+        </div>
+      </div>
+
+      <div class="gallery-item tall g2 reveal">
+        <div class="gallery-placeholder">
+          <div class="gallery-inner">
+            <span class="gallery-emoji">📚</span>
+            <span class="gallery-caption">Library hours — and borrowed pens</span>
+          </div>
+        </div>
+        <div class="gallery-overlay">
+          <span class="gallery-overlay-icon">📖</span>
+          <span class="gallery-overlay-text">Library Vibes</span>
+        </div>
+      </div>
+
+      <div class="gallery-item g3 reveal">
+        <div class="gallery-placeholder">
+          <div class="gallery-inner">
+            <span class="gallery-emoji">🧪</span>
+            <span class="gallery-caption">Science Lab days</span>
+          </div>
+        </div>
+        <div class="gallery-overlay">
+          <span class="gallery-overlay-icon">⚗️</span>
+          <span class="gallery-overlay-text">Lab Partners</span>
+        </div>
+      </div>
+
+      <div class="gallery-item g4 reveal">
+        <div class="gallery-placeholder">
+          <div class="gallery-inner">
+            <span class="gallery-emoji">🌸</span>
+            <span class="gallery-caption">School garden afternoons</span>
+          </div>
+        </div>
+        <div class="gallery-overlay">
+          <span class="gallery-overlay-icon">🌺</span>
+          <span class="gallery-overlay-text">Between Classes</span>
+        </div>
+      </div>
+
+      <div class="gallery-item g5 reveal">
+        <div class="gallery-placeholder">
+          <div class="gallery-inner">
+            <span class="gallery-emoji">🎓</span>
+            <span class="gallery-caption">Annual school gathering</span>
+          </div>
+        </div>
+        <div class="gallery-overlay">
+          <span class="gallery-overlay-icon">🎉</span>
+          <span class="gallery-overlay-text">School Events</span>
+        </div>
+      </div>
+
+      <div class="gallery-item g6 reveal">
+        <div class="gallery-placeholder">
+          <div class="gallery-inner">
+            <span class="gallery-emoji">☕</span>
+            <span class="gallery-caption">Canteen break moments</span>
+          </div>
+        </div>
+        <div class="gallery-overlay">
+          <span class="gallery-overlay-icon">🍜</span>
+          <span class="gallery-overlay-text">Canteen Chaos</span>
+        </div>
+      </div>
+
+      <div class="gallery-item wide g7 reveal">
+        <div class="gallery-placeholder">
+          <div class="gallery-inner">
+            <span class="gallery-emoji">🌅</span>
+            <span class="gallery-caption">After-school golden hour walks</span>
+          </div>
+        </div>
+        <div class="gallery-overlay">
+          <span class="gallery-overlay-icon">✨</span>
+          <span class="gallery-overlay-text">Golden Hour</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FUN MOMENTS -->
+<section id="fun">
+  <div class="container">
+    <div class="center reveal">
+      <p class="section-label">The Friend Squad</p>
+      <h2 class="section-title">The <em>Fun Moments</em></h2>
+      <p class="section-desc">When friends get involved, the teasing is real — and completely, embarrassingly delightful.</p>
+    </div>
+
+    <div class="fun-grid">
+      <div class="fun-card reveal">
+        <span class="fun-icon">😭</span>
+        <h3 class="fun-title">The Hallway Walk</h3>
+        <p class="fun-text">Every time Abrar walked past Section A, his friends would dramatically slow down and start whispering loudly. Jhoti's friends would giggle in response. Both groups pretended not to notice each other. It was painfully obvious.</p>
+        <div class="fun-quote">"Bro walk NORMAL." — Abrar's best friend, every single time.</div>
+      </div>
+
+      <div class="fun-card reveal">
+        <span class="fun-icon">📱</span>
+        <h3 class="fun-title">The Screenshot Evidence</h3>
+        <p class="fun-text">The group chat was a crime scene. Every seen-but-not-replied, every quick reply, every two-minute response time — analysed, screenshotted, and submitted as court evidence by friends who had absolutely nothing better to do.</p>
+        <div class="fun-quote">"He replied in 45 seconds. Case CLOSED." — the friend group, as detectives.</div>
+      </div>
+
+      <div class="fun-card reveal">
+        <span class="fun-icon">🎭</span>
+        <h3 class="fun-title">The Name Slip</h3>
+        <p class="fun-text">Once Abrar accidentally called out "Jhoti" when his teacher asked a question — meaning to say something completely different. The class went silent. Then erupted. He somehow survived the rest of the day without making eye contact with anyone.</p>
+        <div class="fun-quote">"We do NOT talk about this." — Abrar, for the next two weeks.</div>
+      </div>
+
+      <div class="fun-card reveal">
+        <span class="fun-icon">📖</span>
+        <h3 class="fun-title">The Note Exchange</h3>
+        <p class="fun-text">They started sharing notes — totally normal, totally academic. Jhoti's friends took one look at the neatly written notes with star stickers on the cover and immediately declared it a love letter situation. It was a Chemistry handout. But also, kind of.</p>
+        <div class="fun-quote">"He drew a tiny rocket on the margin. ROCKET." — Jhoti's bestie, as evidence.</div>
+      </div>
+
+      <div class="fun-card reveal">
+        <span class="fun-icon">🎤</span>
+        <h3 class="fun-title">The School Talent Show</h3>
+        <p class="fun-text">Both participated in the annual school event — coincidentally performing back to back. Their friend groups, sitting on opposite ends of the auditorium, somehow coordinated cheering at the same time. Nobody planned it. Everyone denied it later.</p>
+        <div class="fun-quote">"I was cheering for myself." — every single friend from both groups.</div>
+      </div>
+
+      <div class="fun-card reveal">
+        <span class="fun-icon">🌧️</span>
+        <h3 class="fun-title">The Rainy Day Cover</h3>
+        <p class="fun-text">It rained unexpectedly after school. Abrar had an umbrella. Jhoti's group didn't. You can already see where this is going. What followed was three minutes of perfectly normal umbrella sharing and six months of relentless teasing from everyone who witnessed it.</p>
+        <div class="fun-quote">"I still have the photo." — the one friend who always has the photo.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE BANNER -->
+<div id="quote-banner">
+  <blockquote class="banner-quote reveal">
+    "School days feel endless when you're in them — <em>until they end</em>. Then you'd give anything to walk those corridors one more time."
+  </blockquote>
+  <p class="banner-attr reveal">— From the hallways of Ispahani</p>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Abrar <span>&</span> Jhoti</div>
+  <p class="footer-tagline">A story written in the margins of Science notebooks and school corridors.</p>
+  <div class="footer-hearts">💗 💛 💜</div>
+  <p class="footer-copy">✦ Ispahani Public School & College · Science Section A & B ✦<br>
+  <span style="opacity:.5;font-size:.75rem">Made with love &amp; a lot of Chemistry.</span></p>
+</footer>
+
+<script>
+  // ─── Custom Cursor ───────────────────────────
+  const cursor = document.getElementById('cursor');
+  const ring   = document.getElementById('cursorRing');
+  let mx = 0, my = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+    ring.style.left   = mx + 'px'; ring.style.top   = my + 'px';
+  });
+  document.querySelectorAll('a,button,.fun-card,.char-card,.gallery-item').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.width = '18px'; cursor.style.height = '18px';
+      ring.style.width  = '48px'; ring.style.height = '48px';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.width = '10px'; cursor.style.height = '10px';
+      ring.style.width  = '34px'; ring.style.height = '34px';
+    });
+  });
+
+  // ─── Floating Petals ─────────────────────────
+  const petalContainer = document.getElementById('petals');
+  const petalEmojis = ['🌸','🌺','✨','💮','🍃','⭐','💫'];
+  for (let i = 0; i < 18; i++) {
+    const p = document.createElement('span');
+    p.className = 'petal';
+    p.textContent = petalEmojis[i % petalEmojis.length];
+    p.style.cssText = `
+      left: ${Math.random()*100}%;
+      font-size: ${.8 + Math.random() * 1.2}rem;
+      animation-duration: ${8 + Math.random()*12}s;
+      animation-delay: ${Math.random()*12}s;
+    `;
+    petalContainer.appendChild(p);
+  }
+
+  // ─── Hamburger ───────────────────────────────
+  const hamburger = document.getElementById('hamburger');
+  const navLinks  = document.getElementById('navLinks');
+  hamburger.addEventListener('click', () => {
+    navLinks.classList.toggle('open');
+  });
+  navLinks.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => navLinks.classList.remove('open'));
+  });
+
+  // ─── Scroll Reveal ───────────────────────────
+  const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+  const observer  = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        // stagger siblings
+        const siblings = e.target.parentElement?.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+        if (siblings) {
+          let delay = 0;
+          siblings.forEach(s => {
+            if (!s.classList.contains('visible')) {
+              s.style.transitionDelay = delay + 'ms';
+              delay += 100;
+            }
+          });
+        }
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+  revealEls.forEach(el => observer.observe(el));
+
+  // ─── Navbar shrink on scroll ──────────────────
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.style.padding = window.scrollY > 60 ? '.8rem 4rem' : '1.2rem 4rem';
+    if (window.innerWidth < 900) navbar.style.padding = '.8rem 1.5rem';
+  });
+</script>
+</body>
+</html>
